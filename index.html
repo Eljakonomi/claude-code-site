@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code – Din AI-assistent för kodning</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f0f1a;
+      color: #e8e8f0;
+      line-height: 1.6;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #1a0533 0%, #0d1b4b 50%, #0f2d2d 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+      top: -100px; left: -100px;
+      border-radius: 50%;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 70%);
+      bottom: -100px; right: -100px;
+      border-radius: 50%;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #7c3aed, #0ea5e9);
+      color: white;
+      padding: 0.35rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, #a78bfa, #38bdf8, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.2rem;
+      position: relative; z-index: 1;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: #94a3b8;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      position: relative; z-index: 1;
+    }
+
+    .btn-group {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      position: relative; z-index: 1;
+    }
+
+    .btn {
+      padding: 0.85rem 2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #7c3aed, #0ea5e9);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #a78bfa;
+      border: 2px solid #7c3aed;
+    }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: #64748b;
+      max-width: 560px;
+      margin: 0 auto 3.5rem;
+      font-size: 1.05rem;
+    }
+
+    /* VAD ÄR CLAUDE CODE */
+    .what { background: #0f0f1a; }
+
+    .what .section-label { color: #a78bfa; }
+    .what .section-title { color: #e8e8f0; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, #1e1b4b22, #0c4a6e22);
+      border: 1px solid #ffffff10;
+      border-radius: 1.2rem;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: #7c3aed44;
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #e2e8f0;
+    }
+
+    .feature-card p { color: #64748b; font-size: 0.95rem; }
+
+    /* SÅ HÄR FUNGERAR DET */
+    .how { background: linear-gradient(180deg, #0f0f1a 0%, #0d1b3e 100%); }
+
+    .how .section-label { color: #38bdf8; }
+    .how .section-title { color: #e8e8f0; }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 1.25rem;
+      top: 3.5rem;
+      bottom: -1rem;
+      width: 2px;
+      background: linear-gradient(180deg, #7c3aed, #0ea5e9);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 2.5rem; height: 2.5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed, #0ea5e9);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.9rem;
+      color: white;
+      margin-top: 0.15rem;
+      position: relative; z-index: 1;
+    }
+
+    .step-body { padding-bottom: 2.5rem; }
+    .step-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; color: #e2e8f0; }
+    .step-body p { color: #64748b; font-size: 0.95rem; }
+
+    /* KODEXEMPEL */
+    .demo { background: #0f0f1a; }
+    .demo .section-label { color: #34d399; }
+    .demo .section-title { color: #e8e8f0; }
+
+    .terminal {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 1rem;
+      overflow: hidden;
+      max-width: 750px;
+      margin: 0 auto;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    }
+
+    .terminal-bar {
+      background: #161b22;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+
+    .terminal-bar span {
+      margin-left: 0.5rem;
+      color: #8b949e;
+      font-size: 0.8rem;
+      font-family: monospace;
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .t-prompt { color: #34d399; }
+    .t-cmd { color: #e6edf3; }
+    .t-out { color: #8b949e; }
+    .t-hl { color: #79c0ff; }
+    .t-success { color: #3fb950; }
+
+    /* ANVNDNINGSOMRADEN */
+    .use-cases { background: linear-gradient(180deg, #0f0f1a 0%, #1a0533 100%); }
+    .use-cases .section-label { color: #f472b6; }
+    .use-cases .section-title { color: #e8e8f0; }
+
+    .use-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .use-card {
+      border-radius: 1rem;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .use-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 1rem;
+      padding: 1px;
+      background: linear-gradient(135deg, #7c3aed44, #0ea5e944);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .use-card-inner { background: #13131f; border-radius: 1rem; }
+
+    .use-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: #e2e8f0; }
+    .use-card p { color: #64748b; font-size: 0.9rem; }
+    .use-icon { font-size: 1.8rem; margin-bottom: 0.75rem; display: block; }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(135deg, #1a0533, #0d1b4b, #0f2d2d);
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+
+    .cta h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, #a78bfa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .cta p { color: #64748b; max-width: 480px; margin: 0 auto 2.5rem; font-size: 1.05rem; }
+
+    /* FOOTER */
+    footer {
+      background: #080810;
+      text-align: center;
+      padding: 2rem;
+      color: #334155;
+      font-size: 0.85rem;
+      border-top: 1px solid #1e293b;
+    }
+
+    footer a { color: #7c3aed; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="badge">Anthropic · Claude Code</span>
+    <h1>Koda smartare med AI</h1>
+    <p>Claude Code är en kraftfull AI-assistent som hjälper dig att skriva, förstå och förbättra kod — direkt i din terminal eller IDE.</p>
+    <div class="btn-group">
+      <a href="https://claude.ai/code" class="btn btn-primary">Kom igång gratis</a>
+      <a href="#hur-fungerar" class="btn btn-secondary">Hur fungerar det?</a>
+    </div>
+  </section>
+
+  <!-- VAD ÄR CLAUDE CODE -->
+  <section class="what">
+    <div class="container">
+      <div class="section-label">Vad är Claude Code?</div>
+      <h2 class="section-title">En AI som faktiskt förstår din kod</h2>
+      <p class="section-sub">Claude Code läser hela din kodbas, förstår kontexten och hjälper dig att lösa riktiga problem — inte bara snippets.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Förstår hela projektet</h3>
+          <p>Claude Code kan läsa och analysera din hela kodbas för att ge svar som passar just ditt projekt, inte generiska exempel.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✏️</div>
+          <h3>Skriver och redigerar filer</h3>
+          <p>Ber du Claude Code att fixa en bugg eller lägga till en funktion, gör den det — och sparar ändringarna direkt i dina filer.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖥️</div>
+          <h3>Kör kommandon i terminalen</h3>
+          <p>Claude Code kan köra kommandon, installera paket, köra tester och mycket mer — med din godkännande.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3>Integreras i din IDE</h3>
+          <p>Finns som plugin för VS Code och JetBrains, som CLI-verktyg, som webb-app och som desktop-app för Mac och Windows.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Du bestämmer alltid</h3>
+          <p>Claude Code frågar alltid om lov innan den gör riskfyllda åtgärder. Du ser exakt vad som ändras och kan alltid säga nej.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3>Söker på webben</h3>
+          <p>Behöver du dokumentation eller en lösning på ett knepigt problem? Claude Code kan söka på nätet och sammanfatta svaret åt dig.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SÅ HÄR FUNGERAR DET -->
+  <section class="how" id="hur-fungerar">
+    <div class="container">
+      <div class="section-label">Så här fungerar det</div>
+      <h2 class="section-title">Från tanke till kod på sekunder</h2>
+      <p class="section-sub">Claude Code arbetar i din befintliga miljö och följer ditt arbetsflöde.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>Installera Claude Code</h3>
+            <p>Installera via npm med <code>npm install -g @anthropic-ai/claude-code</code>, eller hämta desktop-appen. Logg in med ditt Anthropic-konto.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>Öppna ditt projekt</h3>
+            <p>Navigera till din projektmapp i terminalen och skriv <code>claude</code>. Claude Code indexerar och förstår din kodbas direkt.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>Beskriv vad du vill göra</h3>
+            <p>Skriv på naturligt språk — svenska eller engelska. "Fixa buggen i login-funktionen", "Lägg till mörkt läge", "Förklara den här koden".</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>Granska och godkänn</h3>
+            <p>Claude Code visar vad den tänker göra. Du granskar, godkänner — och ändringarna sparas. Det är allt.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KODEXEMPEL -->
+  <section class="demo">
+    <div class="container">
+      <div class="section-label">Se det i aktion</div>
+      <h2 class="section-title">Exempel från verkligheten</h2>
+      <p class="section-sub">Så här ser en typisk session med Claude Code ut i terminalen.</p>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span>~/mitt-projekt — claude</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">Du &gt;</span> <span class="t-cmd">Det finns en bugg i checkout-flödet — användare får fel 500 när de betalar</span></div>
+          <br>
+          <div><span class="t-hl">Claude läser: </span><span class="t-out">src/checkout.js, src/api/payments.js, logs/error.log...</span></div>
+          <br>
+          <div><span class="t-out">Hittade problemet! I payments.js rad 47 saknas ett await-nyckelord</span></div>
+          <div><span class="t-out">vilket gör att betalningssvaret inte väntas ut korrekt.</span></div>
+          <br>
+          <div><span class="t-hl">Föreslår ändring i </span><span class="t-out">src/api/payments.js:</span></div>
+          <div><span class="t-out">- const result = processPayment(data);</span></div>
+          <div><span class="t-success">+ const result = await processPayment(data);</span></div>
+          <br>
+          <div><span class="t-prompt">Du &gt;</span> <span class="t-cmd">Ja, gör det. Kör också testerna efteråt.</span></div>
+          <br>
+          <div><span class="t-success">✓ Filen uppdaterad</span></div>
+          <div><span class="t-success">✓ npm test — 24 tester godkända</span></div>
+          <div><span class="t-success">✓ Buggen är fixad!</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANVÄNDNINGSOMRÅDEN -->
+  <section class="use-cases">
+    <div class="container">
+      <div class="section-label">Vad kan du använda det till?</div>
+      <h2 class="section-title">Från nybörjare till expert</h2>
+      <p class="section-sub">Claude Code passar alla som arbetar med kod — oavsett erfarenhetsnivå.</p>
+
+      <div class="use-grid">
+        <div class="use-card">
+          <span class="use-icon">🐛</span>
+          <h3>Felsökning</h3>
+          <p>Hitta och fixa buggar snabbt. Claude Code analyserar felmeddelanden och spårar problemet till källan.</p>
+        </div>
+        <div class="use-card">
+          <span class="use-icon">📖</span>
+          <h3>Förstå kod</h3>
+          <p>Fråga vad ett kodblock gör. Perfekt när du tar över ett projekt eller läser andras kod.</p>
+        </div>
+        <div class="use-card">
+          <span class="use-icon">✨</span>
+          <h3>Ny funktionalitet</h3>
+          <p>Beskriv vad du vill bygga — Claude Code hjälper dig planera och implementera det steg för steg.</p>
+        </div>
+        <div class="use-card">
+          <span class="use-icon">♻️</span>
+          <h3>Refaktorering</h3>
+          <p>Förbättra kodkvaliteten utan att ändra beteendet. Claude Code föreslår renare strukturer och bättre namngivning.</p>
+        </div>
+        <div class="use-card">
+          <span class="use-icon">🧪</span>
+          <h3>Skriva tester</h3>
+          <p>Generera enhetstester och integrationstester för din befintliga kod automatiskt.</p>
+        </div>
+        <div class="use-card">
+          <span class="use-icon">📝</span>
+          <h3>Dokumentation</h3>
+          <p>Skriv README-filer, API-dokumentation och kommentarer snabbt och konsekvent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Redo att börja koda smartare?</h2>
+      <p>Claude Code är tillgängligt på claude.ai — kom igång på några minuter, helt gratis.</p>
+      <div class="btn-group">
+        <a href="https://claude.ai/code" class="btn btn-primary">Prova Claude Code</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Byggd med ❤️ och Claude Code &nbsp;·&nbsp; <a href="https://claude.ai/code" target="_blank">claude.ai/code</a> &nbsp;·&nbsp; Anthropic 2026</p>
+  </footer>
+
+</body>
+</html>
