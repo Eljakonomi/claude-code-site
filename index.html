@@ -341,69 +341,73 @@
     .cross-device .section-label { color: #a78bfa; }
     .cross-device .section-title { color: #e8e8f0; }
 
-    .device-compare {
+    .continuity-flow {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 2rem;
+      gap: 2.5rem;
       flex-wrap: wrap;
     }
 
-    .device-card {
-      background: linear-gradient(135deg, #1e1b4b33, #0c4a6e33);
-      border: 1px solid #ffffff15;
-      border-radius: 1.2rem;
-      padding: 2rem;
-      flex: 1;
-      min-width: 220px;
-      max-width: 320px;
-    }
-
-    .device-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #e2e8f0;
-    }
-
-    .device-icon { font-size: 1.6rem; }
-
-    .device-features {
-      list-style: none;
+    .continuity-step {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      align-items: center;
+      gap: 1rem;
     }
 
-    .device-features li {
+    .continuity-step p {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    .c-icon { font-size: 2rem; }
+
+    .c-screen {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      width: 220px;
+    }
+
+    .c-screen.mobile { width: 160px; }
+
+    .c-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #7c3aed, #0ea5e9);
+      margin-bottom: 0.75rem;
+      width: 60%;
+    }
+
+    .c-thread {
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.4rem;
+      font-size: 0.78rem;
+      color: #64748b;
+      margin-bottom: 0.4rem;
+      background: #161b22;
+    }
+
+    .c-thread.active {
+      color: #a78bfa;
+      background: #1e1b4b;
+      border-left: 2px solid #7c3aed;
+    }
+
+    .continuity-arrow {
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      color: #94a3b8;
-      font-size: 0.95rem;
     }
 
-    .device-features li::before {
-      content: '';
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7c3aed, #0ea5e9);
-      flex-shrink: 0;
-    }
+    .continuity-arrow svg { width: 80px; }
 
-    .device-equals {
-      flex-shrink: 0;
-      width: 48px; height: 48px;
-    }
-
-    .sync-note {
-      text-align: center;
-      margin-top: 2.5rem;
-      color: #64748b;
-      font-size: 0.95rem;
+    .continuity-arrow span {
+      font-size: 0.75rem;
+      color: #475569;
     }
 
     /* MOBILE */
@@ -443,9 +447,10 @@
 
       .cta { padding: 4rem 1.25rem; }
 
-      .device-compare { flex-direction: column; align-items: stretch; gap: 1rem; }
-      .device-card { max-width: 100%; }
-      .device-equals { transform: rotate(90deg); margin: 0 auto; }
+      .continuity-flow { flex-direction: column; gap: 1.5rem; }
+      .continuity-arrow svg { transform: rotate(90deg); }
+      .c-screen { width: 100%; max-width: 280px; }
+      .c-screen.mobile { width: 100%; max-width: 280px; }
     }
   </style>
 </head>
@@ -622,54 +627,50 @@
     </div>
   </section>
 
-  <!-- DESKTOP = MOBIL -->
+  <!-- SÖMLÖS KONTINUITET -->
   <section class="cross-device">
     <div class="container">
-      <div class="section-label">Var du än är</div>
-      <h2 class="section-title">Samma Claude Code på desktop och mobil</h2>
-      <p class="section-sub">Alla dina trådar och konversationer följer med — öppna en session på datorn och fortsätt direkt i mobilen.</p>
+      <div class="section-label">Fortsätt var du än är</div>
+      <h2 class="section-title">Starta på datorn — fortsätt på mobilen</h2>
+      <p class="section-sub">Alla dina projekt och trådar finns på mobilen precis som på desktop. Plocka upp där du slutade, utan att missa ett steg.</p>
 
-      <div class="device-compare">
-        <div class="device-card">
-          <div class="device-header">
-            <div class="device-icon">🖥️</div>
-            <span>Desktop</span>
+      <div class="continuity-flow">
+        <div class="continuity-step">
+          <div class="c-icon">🖥️</div>
+          <div class="c-screen">
+            <div class="c-bar"></div>
+            <div class="c-thread active">Projekt: e-handelsapp</div>
+            <div class="c-thread">Projekt: API-integration</div>
+            <div class="c-thread">Projekt: mobilapp</div>
           </div>
-          <ul class="device-features">
-            <li>Alla trådar i sidopanel</li>
-            <li>Fullständig konversationshistorik</li>
-            <li>Projekt och mappar</li>
-            <li>Inline kodändringar</li>
-          </ul>
+          <p>Arbetar på datorn</p>
         </div>
 
-        <div class="device-equals">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 14h24M8 26h24" stroke="url(#eq)" stroke-width="3" stroke-linecap="round"/>
+        <div class="continuity-arrow">
+          <svg viewBox="0 0 60 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 10 Q30 2 55 10" stroke="url(#arr)" stroke-width="2" stroke-dasharray="4 3"/>
+            <path d="M50 6 L56 10 L50 14" stroke="url(#arr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <defs>
-              <linearGradient id="eq" x1="8" y1="20" x2="32" y2="20" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#a78bfa"/>
-                <stop offset="1" stop-color="#38bdf8"/>
+              <linearGradient id="arr" x1="0" y1="10" x2="60" y2="10" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#7c3aed"/>
+                <stop offset="1" stop-color="#0ea5e9"/>
               </linearGradient>
             </defs>
           </svg>
+          <span>synkas automatiskt</span>
         </div>
 
-        <div class="device-card">
-          <div class="device-header">
-            <div class="device-icon">📱</div>
-            <span>Mobil</span>
+        <div class="continuity-step">
+          <div class="c-icon">📱</div>
+          <div class="c-screen mobile">
+            <div class="c-bar"></div>
+            <div class="c-thread active">Projekt: e-handelsapp</div>
+            <div class="c-thread">Projekt: API-integration</div>
+            <div class="c-thread">Projekt: mobilapp</div>
           </div>
-          <ul class="device-features">
-            <li>Alla trådar i sidopanel</li>
-            <li>Fullständig konversationshistorik</li>
-            <li>Projekt och mappar</li>
-            <li>Inline kodändringar</li>
-          </ul>
+          <p>Fortsätter på mobilen</p>
         </div>
       </div>
-
-      <p class="sync-note">Synkas automatiskt — ingen konfiguration behövs.</p>
     </div>
   </section>
 
