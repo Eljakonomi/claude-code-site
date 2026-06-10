@@ -336,6 +336,76 @@
     footer a { color: #7c3aed; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
+    /* CROSS-DEVICE */
+    .cross-device { background: linear-gradient(180deg, #1a0533 0%, #0f0f1a 100%); }
+    .cross-device .section-label { color: #a78bfa; }
+    .cross-device .section-title { color: #e8e8f0; }
+
+    .device-compare {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .device-card {
+      background: linear-gradient(135deg, #1e1b4b33, #0c4a6e33);
+      border: 1px solid #ffffff15;
+      border-radius: 1.2rem;
+      padding: 2rem;
+      flex: 1;
+      min-width: 220px;
+      max-width: 320px;
+    }
+
+    .device-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #e2e8f0;
+    }
+
+    .device-icon { font-size: 1.6rem; }
+
+    .device-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .device-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .device-features li::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed, #0ea5e9);
+      flex-shrink: 0;
+    }
+
+    .device-equals {
+      flex-shrink: 0;
+      width: 48px; height: 48px;
+    }
+
+    .sync-note {
+      text-align: center;
+      margin-top: 2.5rem;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
     /* MOBILE */
     @media (max-width: 640px) {
       section { padding: 3.5rem 1.25rem; }
@@ -372,6 +442,10 @@
       .step-body { padding-bottom: 2rem; }
 
       .cta { padding: 4rem 1.25rem; }
+
+      .device-compare { flex-direction: column; align-items: stretch; gap: 1rem; }
+      .device-card { max-width: 100%; }
+      .device-equals { transform: rotate(90deg); margin: 0 auto; }
     }
   </style>
 </head>
@@ -545,6 +619,57 @@
           <p>Skriv README-filer, API-dokumentation och kommentarer snabbt och konsekvent.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- DESKTOP = MOBIL -->
+  <section class="cross-device">
+    <div class="container">
+      <div class="section-label">Var du än är</div>
+      <h2 class="section-title">Samma Claude Code på desktop och mobil</h2>
+      <p class="section-sub">Alla dina trådar och konversationer följer med — öppna en session på datorn och fortsätt direkt i mobilen.</p>
+
+      <div class="device-compare">
+        <div class="device-card">
+          <div class="device-header">
+            <div class="device-icon">🖥️</div>
+            <span>Desktop</span>
+          </div>
+          <ul class="device-features">
+            <li>Alla trådar i sidopanel</li>
+            <li>Fullständig konversationshistorik</li>
+            <li>Projekt och mappar</li>
+            <li>Inline kodändringar</li>
+          </ul>
+        </div>
+
+        <div class="device-equals">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 14h24M8 26h24" stroke="url(#eq)" stroke-width="3" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="eq" x1="8" y1="20" x2="32" y2="20" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#a78bfa"/>
+                <stop offset="1" stop-color="#38bdf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="device-card">
+          <div class="device-header">
+            <div class="device-icon">📱</div>
+            <span>Mobil</span>
+          </div>
+          <ul class="device-features">
+            <li>Alla trådar i sidopanel</li>
+            <li>Fullständig konversationshistorik</li>
+            <li>Projekt och mappar</li>
+            <li>Inline kodändringar</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="sync-note">Synkas automatiskt — ingen konfiguration behövs.</p>
     </div>
   </section>
 
